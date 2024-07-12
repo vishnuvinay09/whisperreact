@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import * as helper from "./helper.js";
 
-function Whisper() {
+async function Whisper() {
     const [showButton, setShowButton] = useState(true)
 
     var context = null;
@@ -15,21 +15,23 @@ function Whisper() {
   
     // model name
     var model_whisper = null;
-  
-    var Module = {
-      print: helper.printTextarea,
-      printErr: helper.printTextarea,
-      setStatus: function (text) {
-        helper.printTextarea("js: " + text);
-      },
-      monitorRunDependencies: function (left) {},
-      preRun: function () {
-        helper.printTextarea("js: Preparing ...");
-      },
-      postRun: function () {
-        helper.printTextarea("js: Initialized successfully!");
-      },
-    };
+
+    // var Module = {
+    //   print: helper.printTextarea,
+    //   printErr: helper.printTextarea,
+    //   setStatus: function (text) {
+    //     helper.printTextarea("js: " + text);
+    //   },
+    //   monitorRunDependencies: function (left) {},
+    //   preRun: function () {
+    //     helper.printTextarea("js: Preparing ...");
+    //   },
+    //   postRun: function () {
+    //     helper.printTextarea("js: Initialized successfully!");
+    //   },
+    // };
+
+    var Module = window.whisperModule;
   
     //
     // fetch models
@@ -44,8 +46,10 @@ function Whisper() {
       } catch (e) {
         // ignore
       }
-  
+
+      //console.log(Module);
       Module.FS_createDataFile("/", fname, buf, true, true);
+
   
       helper.printTextarea(
         "storeFS: stored model: " + fname + " size: " + buf.length
